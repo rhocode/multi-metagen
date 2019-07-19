@@ -6,3 +6,6 @@ deploy:
   on:
     repo: rhocode/multi-metagen
   tag: next
+
+install:
+  - bundle install
