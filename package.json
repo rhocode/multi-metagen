@@ -49,5 +49,8 @@
   "bugs": {
     "url": "https://github.com/rhocode/multi-metagen/issues"
   },
-  "homepage": "https://github.com/rhocode/multi-metagen#readme"
+  "homepage": "https://github.com/rhocode/multi-metagen#readme",
+  "publishConfig": {
+    "access": "public"
+  }
 }
