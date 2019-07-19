@@ -42,7 +42,7 @@
     "url": "git+https://github.com/rhocode/multi-metagen.git"
   },
   "keywords": [
-    "rhocode",
+    "rhocode"
   ],
   "author": "Alexander Fu <aafu@ucdavis.edu>",
   "license": "MIT",

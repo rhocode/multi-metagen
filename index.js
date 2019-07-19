@@ -54,7 +54,14 @@ metagen.formats.es6 = files => `${
 }
 export default {
   ${files.map(varName).join(',\n')}
-}`
+}`;
+
+metagen.formats.es6WithFileExtension = files => `${
+  files.map(file => `import ${varName(file)} from './${file}'`).join('\n')
+  }
+export default {
+  ${files.map(varName).join(',\n')}
+}`;
 
 // Deep Formats
 let deepKeys = _.map(_.flow(noExt, _.replace(/\//g, '.')))
@@ -77,7 +84,7 @@ metagen.formats.deepES6 = files => `${
 }
 export default ${deepify(deepKeys(files), files.map(varName)).replace(/"/g, '')}`
 
-var stripIndex = file => file.replace(/\/index$/, '')
-var varName = _.flow(noExt, stripIndex, sanitizeFileName)
+var stripIndex = file => file.replace(/\/index$/, '');
+var varName = _.flow(noExt, stripIndex, sanitizeFileName);
 
 module.exports = metagen
