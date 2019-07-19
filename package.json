@@ -1,6 +1,6 @@
 {
-  "name": "directory-metagen",
-  "version": "1.6.3",
+  "name": "multi-metagen",
+  "version": "2.6.0",
   "description": "Generates directory meta files for things such as including entire directories in requirejs",
   "main": "index.js",
   "bin": {
@@ -39,16 +39,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/smartprocure/directory-metagen.git"
+    "url": "git+https://github.com/rhocode/multi-metagen.git"
   },
   "keywords": [
-    "requirejs",
-    "requirejs-metagen"
+    "rhocode",
   ],
-  "author": "Samuel Greene <sgreene@smartprocure.us>",
+  "author": "Alexander Fu <aafu@ucdavis.edu>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/smartprocure/directory-metagen/issues"
+    "url": "https://github.com/rhocode/multi-metagen/issues"
   },
-  "homepage": "https://github.com/smartprocure/directory-metagen#readme"
+  "homepage": "https://github.com/rhocode/multi-metagen#readme"
 }
