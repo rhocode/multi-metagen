@@ -60,12 +60,11 @@ export default {
 
 metagen.formats.es6WithFileExtension = files => {
  const finalText = `${
-   files.map(file => `import ${varName(file)} from './${file}'`).join('\n')
+   files.map(file => `import ${sgVarName(file)} from './${file}'`).join('\n')
  }
 export default {
-  ${files.map(varName).join(',\n')}
+  ${files.map(sgVarName).join(',\n')}
 }`;
- console.log(finalText);
 
  return finalText;
 }
@@ -99,6 +98,8 @@ var removeWeirdSpaces = file => {
   return "sg" + file.replace(/\s/g, '');
 }
 
-var varName = _.flow(noExt, stripIndex, sanitizeFileName, removeWeirdSpaces);
+var sgVarName = _.flow(noExt, stripIndex, sanitizeFileName, removeWeirdSpaces);
+
+var varName = _.flow(noExt, stripIndex, sanitizeFileName);
 
 module.exports = metagen
