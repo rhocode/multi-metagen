@@ -9,7 +9,9 @@ let beautify = require('js-beautify').js_beautify
 let slice = start => thing => thing.slice(start)
 
 // Path Utils
-let sanitizeFileName = file => file.replace(/-|\.|\//g, '_')
+let sanitizeFileName = file => {
+  return file.replace(/-|\.|\//g, '_')
+}
 let stripLeadingSlash = file => file.replace(new RegExp(`^\\${path.sep}`, 'g'), '')
 let filename = file => noExt(_.last(file.split('/')))
 let relativeFilenames = (dir, exclusions) => readDir(dir, exclusions).map(slice(dir.length))
@@ -56,12 +58,17 @@ export default {
   ${files.map(varName).join(',\n')}
 }`;
 
-metagen.formats.es6WithFileExtension = files => `${
-  files.map(file => `import ${varName(file)} from './${file}'`).join('\n')
-  }
+metagen.formats.es6WithFileExtension = files => {
+ const finalText = `${
+   files.map(file => `import ${varName(file)} from './${file}'`).join('\n')
+ }
 export default {
   ${files.map(varName).join(',\n')}
 }`;
+ console.log(finalText);
+
+ return finalText;
+}
 
 // Deep Formats
 let deepKeys = _.map(_.flow(noExt, _.replace(/\//g, '.')))
@@ -84,7 +91,14 @@ metagen.formats.deepES6 = files => `${
 }
 export default ${deepify(deepKeys(files), files.map(varName)).replace(/"/g, '')}`
 
-var stripIndex = file => file.replace(/\/index$/, '');
-var varName = _.flow(noExt, stripIndex, sanitizeFileName);
+var stripIndex = file => {
+  return file.replace(/\/index$/, '');
+}
+
+var removeWeirdSpaces = file => {
+  return "sg" + file.replace(/\s/g, '');
+}
+
+var varName = _.flow(noExt, stripIndex, sanitizeFileName, removeWeirdSpaces);
 
 module.exports = metagen
