@@ -1,6 +1,6 @@
 {
   "name": "multi-metagen",
-  "version": "2.6.0",
+  "version": "3.0.0",
   "description": "Generates directory meta files for things such as including entire directories in requirejs",
   "main": "index.js",
   "bin": {
