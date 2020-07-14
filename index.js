@@ -10,7 +10,7 @@ let slice = start => thing => thing.slice(start)
 
 // Path Utils
 let sanitizeFileName = file => {
-  return file.replace(/-|\.|\//g, '_')
+  return file.replace(/[-./]/g, '_')
 }
 let stripLeadingSlash = file => file.replace(new RegExp(`^\\${path.sep}`, 'g'), '')
 let filename = file => noExt(_.last(file.split('/')))
@@ -24,7 +24,7 @@ let metagen = options => relativeFilenames(options.path, options.exclusions || [
   .then(options.filter || defaultFilter)
   .then(files => fs.writeFileAsync(
     path.join(options.path, options.output || '__all.js'),
-    beautify(options.format(files.map(stripLeadingSlash).sort(), options), {indent_size: options.indent_size || 2})
+    beautify(options.format(files.map(stripLeadingSlash).sort(), options), { indent_size: options.indent_size || 2 })
   ))
 
 metagen.utils = {
@@ -44,6 +44,7 @@ metagen.formats.AMDCommonJS = files => `define(function(require) {
     ${files.map(noExt).map(file => `'${file}': require('./${file}')`).join(',\n')}
   };
 });`
+
 metagen.formats.amd = files => `define([
   ${files.map(file => `'${noExt(file)}'`).join(',\n')}
 ], function() {
@@ -51,29 +52,35 @@ metagen.formats.amd = files => `define([
     ${files.map((file, i) => `'${noExt(file)}': arguments[${i}]`).join(',\n')}
   }
 });`
-metagen.formats.es6 = files => `${
-  files.map(file => `import ${varName(file)} from './${noExt(file)}'`).join('\n')
-}
+
+metagen.formats.es6 = files => {
+  return `${
+    files.map(file => `import ${varName(file)} from './${noExt(file)}'`).join('\n')
+  }
 export default {
   ${files.map(varName).join(',\n')}
-}`;
+}`
+}
 
 metagen.formats.es6WithFileExtension = files => {
- const finalText = `${
-   files.map(file => `import ${sgVarName(file)} from './${file}'`).join('\n')
- }
+  return `${
+    files.map(file => `import ${sgVarName(file)} from './${file}'`).join('\n')
+  }
+
+export const manifest = [
+${files.map(file => `  "${file}"`).join('\n')}
+];
+  
 export default {
   ${files.map(sgVarName).join(',\n')}
-}`;
-
- return finalText;
+}`
 }
 
 // Deep Formats
 let deepKeys = _.map(_.flow(noExt, _.replace(/\//g, '.')))
 let stringify = x => JSON.stringify(x, null, 4)
 let indent = _.replace(/\n/g, '\n    ')
-let unquote = _.replace(/"require(.*)'\)"/g, "require$1')")
+let unquote = _.replace(/"require(.*)'\)"/g, 'require$1\')')
 let deepify = _.flow(_.zipObjectDeep, stringify, indent, unquote)
 
 metagen.formats.deepCommonJS = files => `module.exports = ${deepify(deepKeys(files), files.map(file => `require('./${noExt(file)}')`))};`
@@ -91,15 +98,15 @@ metagen.formats.deepES6 = files => `${
 export default ${deepify(deepKeys(files), files.map(varName)).replace(/"/g, '')}`
 
 var stripIndex = file => {
-  return file.replace(/\/index$/, '');
+  return file.replace(/\/index$/, '')
 }
 
 var removeWeirdSpaces = file => {
-  return "sg" + file.replace(/\s/g, '');
+  return 'sg' + file.replace(/\s/g, '')
 }
 
-var sgVarName = _.flow(noExt, stripIndex, sanitizeFileName, removeWeirdSpaces);
+var sgVarName = _.flow(noExt, stripIndex, sanitizeFileName, removeWeirdSpaces)
 
-var varName = _.flow(noExt, stripIndex, sanitizeFileName);
+var varName = _.flow(noExt, stripIndex, sanitizeFileName)
 
 module.exports = metagen
