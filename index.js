@@ -68,7 +68,7 @@ metagen.formats.es6WithFileExtension = files => {
   }
 
 export const manifest = [
-${files.map(file => `  "${file}"`).join('\n')}
+${files.map(file => `  "${file}"`).join(',\n')}
 ];
   
 export default {
