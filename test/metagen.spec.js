@@ -261,7 +261,7 @@ import sass_file1 from './sass/file1'
 import sass_file2 from './sass/file2'
 import ts_file1 from './ts/file1'
 import ts_file2 from './ts/file2'
-const entries = {
+export default {
   coffee: {
     file1: coffee_file1,
     file2: coffee_file2
@@ -293,9 +293,7 @@ const entries = {
     file1: ts_file1,
     file2: ts_file2
   }
-};
-
-export default entries;`)
+}`)
   })
 
   it('deepCommonJS', async () => {

@@ -71,9 +71,11 @@ export const manifest = [
 ${files.map(file => `  "${file}"`).join(',\n')}
 ];
   
-export default {
+const entries = {
   ${files.map(sgVarName).join(',\n')}
-}`
+};
+
+export default entries;`
 }
 
 // Deep Formats
@@ -95,9 +97,7 @@ metagen.formats.deepAMD = files => `define([
 metagen.formats.deepES6 = files => `${
   files.map(file => `import ${varName(file)} from './${noExt(file)}'`).join('\n')
 }
-const entries = ${deepify(deepKeys(files), files.map(varName)).replace(/"/g, '')};
-
-export default entries;`
+export default ${deepify(deepKeys(files), files.map(varName)).replace(/"/g, '')}`
 
 var stripIndex = file => {
   return file.replace(/\/index$/, '')
