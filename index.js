@@ -95,7 +95,9 @@ metagen.formats.deepAMD = files => `define([
 metagen.formats.deepES6 = files => `${
   files.map(file => `import ${varName(file)} from './${noExt(file)}'`).join('\n')
 }
-export default ${deepify(deepKeys(files), files.map(varName)).replace(/"/g, '')}`
+const entries = ${deepify(deepKeys(files), files.map(varName)).replace(/"/g, '')};
+
+export default entries;`
 
 var stripIndex = file => {
   return file.replace(/\/index$/, '')
